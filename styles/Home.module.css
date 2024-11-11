@@ -12,7 +12,10 @@
   background-color: rgba(26, 25, 25, 0.5);
   padding: 2rem;
   width: 50rem;
-
+  gap: 1rem;
+  @media (max-width: 768px) {
+    width: 90%;
+  }
 }
 
 .title {
@@ -24,6 +27,9 @@
   font-size: 2rem;
   margin-bottom: 20px;
   padding: 2rem;
+  @media (max-width: 768px) {
+    font-size: 1.2rem;
+  }
 }
 .feedbackArea {
   display: flex;
@@ -40,6 +46,9 @@
   border: none;
   border-radius: 30px;
   transition: background-color 0.3s;
+  @media (max-width: 768px) {
+    font-size: 1.2rem;
+  }
 }
 
 .startButton:hover {

@@ -11,7 +11,6 @@ type GameContextType = {
   score: number;
   currentSong: string;
   checkAnswer: (answer: string) => boolean;
-  nextRound: () => void;
   isGameOver: boolean;
   playDuration: number;
   filteredAnswers: string[];
@@ -35,7 +34,7 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
 
   const selectedSongs = React.useMemo(() => {
     const shuffledSongs = [...musicMovies].sort(() => 0.5 - Math.random());
-    return shuffledSongs.slice(0, 3);
+    return shuffledSongs.slice(0, 1);
   }, []);
 
   useEffect(() => {
@@ -44,29 +43,23 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
 
   const checkAnswer = (answer: string) => {
     const correct =
-      answer.toLowerCase() === selectedSongs[score].answer.toLowerCase();
+      answer.toLowerCase() === selectedSongs[0].answer.toLowerCase();
     if (correct) {
-      setScore((prev) => prev + 1);
-      setAttempt(0);
-      setPlayDuration(5);
-
-      if (score + 1 === selectedSongs.length) {
-        setIsGameOver(true);
-      } else {
-        nextRound();
-      }
+      setScore(1);
+      setIsGameOver(true);
     } else {
       setAttempt((prev) => prev + 1);
-      if (attempt === 0) setPlayDuration(10);
-      else if (attempt === 1) setPlayDuration(20);
     }
     return correct;
   };
 
-  const nextRound = () => {
-    const nextSong = selectedSongs[score + 1];
-    if (nextSong) setCurrentSong(nextSong.src);
-  };
+  // Efeito para atualizar a duração da música dependendo do número de tentativas
+  useEffect(() => {
+    if (attempt === 0) setPlayDuration(10);
+    else if (attempt === 1) setPlayDuration(20);
+    else if (attempt === 2) setPlayDuration(30);
+    else if (attempt === 3) setPlayDuration(60);
+  }, [attempt]);
 
   const filterTitles = (query: string) => {
     const lowerQuery = query.toLowerCase();
@@ -84,7 +77,6 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
         score,
         currentSong,
         checkAnswer,
-        nextRound,
         isGameOver,
         playDuration,
         filteredAnswers,
