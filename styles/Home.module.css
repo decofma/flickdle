@@ -3,11 +3,11 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100vh;
+  height: 100svh;
   text-align: center;
 }
 .container__content {
-  height: 90vh;
+  height: 80svh;
   backdrop-filter: blur(5px);
   background-color: rgba(26, 25, 25, 0.5);
   padding: 2rem;
