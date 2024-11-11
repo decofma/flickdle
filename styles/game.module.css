@@ -11,7 +11,7 @@
   backdrop-filter: blur(5px);
   background-color: rgba(26, 25, 25, 0.5);
   padding: 2rem;
-  height: 50rem;
+  height: 90vh;
   width: 50rem;
   gap: 1rem;
   @media (max-width: 768px) {
