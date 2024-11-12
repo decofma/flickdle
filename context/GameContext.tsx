@@ -51,24 +51,9 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
 
   useEffect(() => {
     setCurrentSong(dailySong.src);
-    loadGameState();
   }, [dailySong]);
 
-  // Carrega o progresso do jogo do usuário do Local Storage
-  const loadGameState = () => {
-    const savedState = localStorage.getItem("gameState");
-    if (savedState) {
-      const { score, isGameOver } = JSON.parse(savedState);
-      setScore(score);
-      setIsGameOver(isGameOver);
-    }
-  };
 
-  // Salva o progresso do jogo no Local Storage
-  const saveGameState = () => {
-    const gameState = { score, isGameOver };
-    localStorage.setItem("gameState", JSON.stringify(gameState));
-  };
 
   const checkAnswer = (answer: string) => {
     const correct =
@@ -76,7 +61,6 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
     if (correct) {
       setScore(1);
       setIsGameOver(true);
-      saveGameState();  // Salva o progresso ao acertar a resposta
     } else {
       setAttempt((prev) => prev + 1);
     }
