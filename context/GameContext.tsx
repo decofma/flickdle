@@ -36,7 +36,11 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
   // Seed para música fixa do dia
   const getDailySeed = () => {
     const today = new Date();
-    return today.getFullYear() * 10000 + (today.getMonth() + 1) * 100 + today.getDate();
+    return (
+      today.getFullYear() * 10000 +
+      (today.getMonth() + 1) * 100 +
+      today.getDate()
+    );
   };
 
   const getRandomSongBySeed = (seed: number) => {
@@ -53,11 +57,8 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
     setCurrentSong(dailySong.src);
   }, [dailySong]);
 
-
-
   const checkAnswer = (answer: string) => {
-    const correct =
-      answer.toLowerCase() === dailySong.answer.toLowerCase();
+    const correct = answer.toLowerCase() === dailySong.answer.toLowerCase();
     if (correct) {
       setScore(1);
       setIsGameOver(true);
@@ -68,10 +69,10 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
   };
 
   useEffect(() => {
-    if (attempt === 0) setPlayDuration(10);
-    else if (attempt === 1) setPlayDuration(20);
-    else if (attempt === 2) setPlayDuration(30);
-    else if (attempt === 3) setPlayDuration(60);
+    if (attempt === 0) setPlayDuration(5);
+    else if (attempt === 1) setPlayDuration(10);
+    else if (attempt === 2) setPlayDuration(15);
+    else if (attempt === 3) setPlayDuration(30);
   }, [attempt]);
 
   const filterTitles = (query: string) => {
@@ -94,7 +95,7 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
         playDuration,
         filteredAnswers,
         filterTitles,
-        dailySong
+        dailySong,
       }}
     >
       {children}

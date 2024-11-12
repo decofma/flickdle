@@ -129,6 +129,12 @@ const GamePage = () => {
             You guessed the Flickdle of the day. Come back tomorrow!
           </p>
           <h3>Your guessings:</h3>
+          <div className={styles.guessRow}>
+            <div className={styles.guessBox}>Movie Name</div>
+            <div className={styles.guessBox}>Release Date</div>
+            <div className={styles.guessBox}>Revenue $</div>
+            <div className={styles.guessBox}>Genres</div>
+          </div>
           {/* Exibindo todos os palpites do jogador */}
           <div className={styles.guessesContainer}>
             {guesses.map((guessedMovie, index) => (
@@ -147,7 +153,7 @@ const GamePage = () => {
                     "release"
                   )}`}
                 >
-                  Release: {guessedMovie.release}
+                  {guessedMovie.release}
                 </div>
                 <div
                   className={`${styles.guessBox} ${getColorClass(
@@ -155,7 +161,7 @@ const GamePage = () => {
                     "intake"
                   )}`}
                 >
-                  Intake: ${guessedMovie.intake}
+                  ${formatNumber(guessedMovie.intake)}
                 </div>
                 <div
                   className={`${styles.guessBox} ${getColorClass(
@@ -163,7 +169,7 @@ const GamePage = () => {
                     "genre"
                   )}`}
                 >
-                  Genres: {guessedMovie.genre.join(", ")}
+                  {guessedMovie.genre.join(", ")}
                 </div>
               </div>
             ))}
@@ -237,7 +243,7 @@ const GamePage = () => {
           <div className={styles.guessRow}>
             <div className={styles.guessBox}>Movie Name</div>
             <div className={styles.guessBox}>Release Date</div>
-            <div className={styles.guessBox}>Total Income $</div>
+            <div className={styles.guessBox}>Revenue $</div>
             <div className={styles.guessBox}>Genres</div>
           </div>
           {guesses.map((guessedMovie, index) => (
