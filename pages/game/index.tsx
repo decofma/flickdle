@@ -35,25 +35,26 @@ const GamePage = () => {
       const correct = checkAnswer(guess);
       setFeedback(correct ? "Correct!" : "Try again!");
 
-      // Encontre o filme correspondente ao palpite do usuário
       const guessedMovie = musicMovies.find((movie) => movie.answer === guess);
       if (guessedMovie) {
-        setGuesses((prev) => [...prev, guessedMovie]); // Adiciona o palpite ao histórico de palpites
+        setGuesses((prev) => [...prev, guessedMovie]); 
       }
 
-      setCountdown(correct ? 0 : 3); // Reinicia contagem ou termina jogo
+      setCountdown(correct ? 0 : 3); 
     } else {
       setFeedback("Please choose a movie from the suggestions.");
     }
-    setGuess(""); // Limpa a entrada
+    setGuess(""); 
   };
 
-  // Função de filtro otimizada para sugestões
   const memoizedFilterTitles = useCallback(() => {
-    if (guess) {
-      filterTitles(guess);
-    }
-  }, [guess, filterTitles]);
+  if (guess.trim() === "") {
+    filterTitles(""); // Certifique-se de que `filterTitles` lide corretamente com entradas vazias.
+    return;
+  }
+  filterTitles(guess);
+}, [guess, filterTitles]);
+
 
   useEffect(() => {
     memoizedFilterTitles();
@@ -72,7 +73,6 @@ const GamePage = () => {
     }
   }, [countdown]);
 
-  // Função para tocar o áudio e pausar após o tempo especificado
   const playAudio = () => {
     if (audioRef.current) {
       audioRef.current.currentTime = 0;
@@ -86,7 +86,6 @@ const GamePage = () => {
     }
   };
 
-  // Função para definir as classes de cor com base nas regras
   const getColorClass = (
     guessedMovie: MovieThemes,
     field: keyof MovieThemes
@@ -102,20 +101,28 @@ const GamePage = () => {
     }
 
     if (field === "genre") {
-      // Verificar se o gênero é único (um único item no array) ou múltiplo (vários itens no array)
       if (guessedMovie.genre.length === 1) {
-        // Quando há apenas um gênero, comparamos diretamente
         return dailySong.genre.includes(guessedMovie.genre[0])
           ? styles.green
           : styles.red;
-      } else {
-        // Quando há vários gêneros, verificamos se ao menos um gênero do palpite está presente no filme do dia
-        const genreMatches = guessedMovie.genre.some((genre) =>
-          dailySong.genre.includes(genre)
-        );
-        return genreMatches ? styles.orange : styles.red;
+        } else {
+          const allGenresMatch =
+            guessedMovie.genre.length === dailySong.genre.length &&
+            guessedMovie.genre.every((genre) => dailySong.genre.includes(genre));
+      
+          const someGenresMatch = guessedMovie.genre.some((genre) =>
+            dailySong.genre.includes(genre)
+          );
+      
+          if (allGenresMatch) {
+            return styles.green;
+          } else if (someGenresMatch) {
+            return styles.orange;
+          } else {
+            return styles.red;
+          }
+        }
       }
-    }
 
     return guessedValue === answerValue ? styles.green : styles.red;
   };
@@ -130,14 +137,14 @@ const GamePage = () => {
           </p>
           <h3>Your guessings:</h3>
           <div className={styles.guessRow}>
-            <div className={styles.guessBox}>Movie Name</div>
-            <div className={styles.guessBox}>Release Date</div>
-            <div className={styles.guessBox}>Revenue $</div>
-            <div className={styles.guessBox}>Genres</div>
+            <div className={styles.guessTitle}>Movie Name</div>
+            <div className={styles.guessTitle}>Release Date</div>
+            <div className={styles.guessTitle}>Revenue $</div>
+            <div className={styles.guessTitle}>Genres</div>
           </div>
           {/* Exibindo todos os palpites do jogador */}
           <div className={styles.guessesContainer}>
-            {guesses.map((guessedMovie, index) => (
+            {guesses.slice().reverse().map((guessedMovie, index) => (
               <div key={index} className={styles.guessRow}>
                 <div
                   className={`${styles.guessBox} ${getColorClass(
@@ -231,22 +238,23 @@ const GamePage = () => {
               ))}
             </ul>
           )}
+        </div>
+
           <button className={styles.guessButton} onClick={handleGuess}>
             Submit
           </button>
-        </div>
 
         <p className={styles.feedback}>{feedback}</p>
 
         {/* Histórico de palpites com feedback visual */}
         <div className={styles.guessesContainer}>
           <div className={styles.guessRow}>
-            <div className={styles.guessBox}>Movie Name</div>
-            <div className={styles.guessBox}>Release Date</div>
-            <div className={styles.guessBox}>Revenue $</div>
-            <div className={styles.guessBox}>Genres</div>
+            <div className={styles.guessTitle}>Movie Name</div>
+            <div className={styles.guessTitle}>Release Date</div>
+            <div className={styles.guessTitle}>Revenue $</div>
+            <div className={styles.guessTitle}>Genres</div>
           </div>
-          {guesses.map((guessedMovie, index) => (
+          {guesses.slice().reverse().map((guessedMovie, index) => (
             <div key={index} className={styles.guessRow}>
               <div
                 className={`${styles.guessBox} ${getColorClass(

@@ -5,6 +5,7 @@
   justify-content: center;
   height: 100svh;
   text-align: center;
+  color: white;
 }
 .container__content {
   height: 80svh;

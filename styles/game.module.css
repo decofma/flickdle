@@ -4,6 +4,7 @@
   justify-content: center;
   height: 100svh;
   text-align: center;
+  color: white;
 }
 .container__content {
   display: flex;
@@ -23,11 +24,9 @@
 }
 .container__guessbox {
   display: flex;
-  gap: 2rem;
-  justify-content: space-between;
-  @media (max-width: 768px) {
-    gap: 1rem;
-  }
+  flex-direction: column; /* Alinha a entrada e as sugestões verticalmente */
+  position: relative; /* Define um contexto para as sugestões */
+  gap: 1rem;
 }
 .title {
   font-size: 2rem;
@@ -48,6 +47,7 @@
   border: 1px solid #ccc;
   border-radius: 4px;
   box-sizing: border-box;
+  z-index: 1; /* Garante que a entrada esteja acima de outros elementos */
   @media (max-width: 768px) {
     width: 300px;
   }
@@ -62,22 +62,21 @@
   overflow-y: auto;
   border: 1px solid #ccc;
   background-color: white;
-  position: absolute;
-  width: 400px;
-  z-index: 1;
+  position: absolute; /* Garante que esteja logo abaixo da entrada */
+  top: 100%; /* Posiciona as sugestões logo abaixo da entrada */
+  left: 0;
+  width:  400px; /* Mesma largura que o input */
+  z-index: 10; /* Fica acima de outros elementos */
   border-radius: 4px;
-  top: 30%;
-  left: 4%;
-  opacity: 60%;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  opacity: 90%;
   @media (max-width: 768px) {
     width: 300px;
   }
   @media (max-width: 600px) {
-    left:8%;
     width: 150px;
   }
 }
-
 .suggestion {
   padding: 10px;
   font-size: 16px;
@@ -94,6 +93,7 @@
 }
 
 .guessButton {
+  align-self: end;
   padding: 10px 0px;
   font-size: 1rem;
   border: none;
@@ -175,7 +175,6 @@
 }
 
 .guessesContainer {
-  margin-top: 20px;
 }
 
 .guessRow {
@@ -184,6 +183,23 @@
   margin-top: 10px;
 }
 
+.guessTitle {
+  padding: 10px;
+  border-radius: 5px;
+  color: white;
+  font-weight: bold;
+  text-align: center;
+  width: 200px;
+  min-width: 60px;
+  font-size: 1rem;
+
+  @media (max-width: 768px) {
+    font-size: 0.7rem;
+  }
+  @media (max-width: 600px) {
+    font-size: 0.5rem;
+  }
+}
 .guessBox {
   padding: 10px;
   border-radius: 5px;
@@ -192,11 +208,14 @@
   text-align: center;
   height: 60px;
   width: 200px;
+  min-width: 60px;
+  font-size: 1rem;
+
   @media (max-width: 768px) {
-    font-size: 0.9rem;
+    font-size: 0.7rem;
   }
   @media (max-width: 600px) {
-    font-size: 0.7rem;
+    font-size: 0.5rem;
   }
 }
 
@@ -220,13 +239,13 @@
   content: "➨"; /* Seta para cima */
   font-size: 50px;
   position: absolute;
-  left: 50%;
+  top: -5%;
+  left: 86%;
+  transform: translateX(-50%) rotate(270deg); /* Ajuste para centralizar e rotacionar */
   color: #6e140f;
-  transform: rotate(270deg) translateX(25%) translateY(40px);
-  filter: opacity(50%);
+  filter: opacity(40%);
 }
 
-/* Classe Red Greater - Valor maior que o correto */
 .red__greater {
   background-color: #f44336; /* Vermelho */
   color: white;
@@ -237,10 +256,11 @@
   content: "➨"; /* Seta para baixo */
   font-size: 50px;
   position: absolute;
-  left: 50%;
+  bottom: -5%;
+  left: 90%;
+  transform: translateX(-50%) rotate(90deg); /* Ajuste para centralizar e rotacionar */
   color: #6e140f;
-  transform: rotate(90deg) translateX(-30%) translateY(-45px);
-  filter: opacity(50%);
+  filter: opacity(40%);
 }
 
 .orange {
@@ -261,4 +281,25 @@
 .movieDetails p {
   font-size: 16px;
   margin-top: 10px;
+}
+
+@media (max-width: 768px) {
+
+  .red__smaller::after {
+    left: 48%;
+  }
+
+  .red__greater::after {
+    left: 52%;
+  }
+}
+@media (max-width: 600px) {
+
+  .red__smaller::after {
+    left: 46%;
+  }
+
+  .red__greater::after {
+    left: 56%;
+  }
 }

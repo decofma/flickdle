@@ -76,14 +76,21 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
   }, [attempt]);
 
   const filterTitles = (query: string) => {
+    if (!query.trim()) { // Verifica se a consulta está vazia ou só contém espaços
+      setFilteredAnswers([]);
+      return;
+    }
+  
     const lowerQuery = query.toLowerCase();
     const filtered = musicMovies
       .filter((movie: { answer: string }) =>
         movie.answer.toLowerCase().includes(lowerQuery)
       )
       .map((movie: { answer: any }) => movie.answer);
+  
     setFilteredAnswers(filtered);
   };
+  
 
   return (
     <GameContext.Provider
